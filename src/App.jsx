@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { MapPin, Sun, CloudRain, Search, Heart, FileHeart } from "lucide-react";
+import {
+  MapPin,
+  Sun,
+  CloudRain,
+  Search,
+  Heart,
+  ToggleLeft,
+  ToggleRight,
+} from "lucide-react";
 import { BsCloudDrizzle } from "react-icons/bs";
 import Favorite from "./Favorite";
 
@@ -31,6 +39,7 @@ const App = () => {
   const [favorite, setFavorite] = useState(getFavoriteFromLS);
   const [fill, setFill] = useState(false);
   const [error, setError] = useState("");
+  const [unit, setUnit] = useState("metric");
 
   const date = new Date().toLocaleDateString();
 
@@ -40,7 +49,7 @@ const App = () => {
 
     try {
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIKEY}&units=metric`,
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIKEY}&units=${unit}`,
       );
 
       const res = await response.json();
@@ -141,8 +150,16 @@ const App = () => {
             <button onClick={() => setClick(!click)}>
               <img src="/src/assets/menu.png" width={30} height={30} alt="" />
             </button>
-            <button>
-              <FileHeart />
+            <button
+              onClick={() =>
+                setUnit(
+                  (unit === "imperial" && "metric") ||
+                    (unit === "metric" && "imperial"),
+                )
+              }
+            >
+              {unit === "imperial" && <ToggleLeft />}
+              {unit === "metric" && <ToggleRight />}
             </button>
 
             {!click && (
@@ -165,7 +182,10 @@ const App = () => {
             <p>It's {weather?.weather?.[0]?.description}</p>
           </div>
 
-          <p className="tempText">{weather?.main?.temp}℃</p>
+          <p className="tempText">
+            {weather?.main?.temp} {unit === "imperial" && "°F"}
+            {unit === "metric" && "℃"}
+          </p>
         </div>
         {favorite.map((fav) => (
           <p>{fav}</p>
