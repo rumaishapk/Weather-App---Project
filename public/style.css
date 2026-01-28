@@ -1,0 +1,86 @@
+* {
+  margin: 0%;
+  padding: 0%;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  background-color: cyan;
+  width: 400px;
+  height: 600px;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.searchButton {
+  padding: 10px;
+  border-radius: 10px;
+  background-color: white;
+  font-size: large;
+  border-radius: 20px;
+  align-items: center;
+}
+
+.searchSection {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 20px;
+  align-items: center;
+}
+
+.weatherInfo {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  align-items: center;
+}
+
+.weatherText {
+  font-size: 20px;
+  color: white;
+  margin-top: 10px;
+}
+
+.tempText {
+  font-size: 40px;
+  color: white;
+  font-weight: 500;
+}
+
+button {
+  border: none;
+  background: none;
+}
+.cityDate {
+  display: flex;
+  color: white;
+  flex-direction: column;
+  font-size: 16px;
+}
+
+.date {
+  margin-top: 5px;
+}
+.input {
+  padding: 10px;
+  background: none;
+  border: none;
+}
+.search {
+  margin-left: 10px;
+  font-size: medium;
+  margin-top: 10px;
+  margin-right: 20px;
+}
+.favorite{
+  display: flex;
+  flex-direction: column;
+}
