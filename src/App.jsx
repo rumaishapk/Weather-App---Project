@@ -11,6 +11,12 @@ import {
 import { BsCloudDrizzle } from "react-icons/bs";
 import Favorite from "./Favorite";
 
+// ✅ IMPORT IMAGES (THIS IS THE FIX)
+import bgSky from "./assets/1.png";
+import bgRain from "./assets/4.png";
+import bgCloud from "./assets/3.png";
+import menuIcon from "./assets/menu.png";
+
 function getWeatherFromLS() {
   try {
     return JSON.parse(localStorage.getItem("weather"));
@@ -54,8 +60,10 @@ const App = () => {
 
       const res = await response.json();
       if (res.cod === "404") {
-        setError("City not found.Please try again!");
+        setError("City not found. Please try again!");
+        return;
       }
+
       setWeather(res);
       setClick(false);
     } catch (e) {
@@ -87,19 +95,23 @@ const App = () => {
     localStorage.setItem("favorite", JSON.stringify(favorite));
   }, [favorite]);
 
-  const condition = weather?.weather?.[0]?.description?.split(" ")[1] || "";
+  const condition =
+    weather?.weather?.[0]?.description?.split(" ")[1] || "";
+
+  // ✅ CHOOSE BACKGROUND IMAGE SAFELY
+  const backgroundImage =
+    condition === "sky"
+      ? bgSky
+      : condition === "rain"
+      ? bgRain
+      : bgCloud;
 
   return (
     <div className="container">
       <div
         className="card"
         style={{
-          backgroundImage:
-            condition === "sky"
-              ? "url('/src/assets/1.png')"
-              : condition === "rain"
-                ? "url('/src/assets/4.png')"
-                : "url('/src/assets/3.png')",
+          backgroundImage: `url(${backgroundImage})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -148,18 +160,15 @@ const App = () => {
 
           <div className="favorite">
             <button onClick={() => setClick(!click)}>
-              <img src="/src/assets/menu.png" width={30} height={30} alt="" />
+              <img src={menuIcon} width={30} height={30} alt="menu" />
             </button>
+
             <button
               onClick={() =>
-                setUnit(
-                  (unit === "imperial" && "metric") ||
-                    (unit === "metric" && "imperial"),
-                )
+                setUnit(unit === "metric" ? "imperial" : "metric")
               }
             >
-              {unit === "imperial" && <ToggleLeft />}
-              {unit === "metric" && <ToggleRight />}
+              {unit === "imperial" ? <ToggleLeft /> : <ToggleRight />}
             </button>
 
             {!click && (
@@ -183,12 +192,13 @@ const App = () => {
           </div>
 
           <p className="tempText">
-            {weather?.main?.temp} {unit === "imperial" && "°F"}
-            {unit === "metric" && "℃"}
+            {weather?.main?.temp}
+            {unit === "imperial" ? " °F" : " ℃"}
           </p>
         </div>
+
         {favorite.map((fav) => (
-          <p>{fav}</p>
+          <p key={fav}>{fav}</p>
         ))}
       </div>
     </div>
